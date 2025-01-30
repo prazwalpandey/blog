@@ -2,9 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from taggit.managers import TaggableManager
-
-
+# from taggit.managers import TaggableManager
+import cloudinary.models
 class PublishedManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status=Post.Status.PUBLISHED)
@@ -25,11 +24,11 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=2, choices=Status, default=Status.DRAFT)
-    image = models.ImageField(upload_to="images/", null=True, blank=True)
+    image = cloudinary.models.CloudinaryField('image', null=True, blank=True)
     objects = models.Manager()
     published = PublishedManager()
     likes = models.PositiveIntegerField(default=0)
-    tags= TaggableManager()
+    # tags= TaggableManager()
 
     class Meta:
         ordering = ["-publish"]
@@ -38,7 +37,8 @@ class Post(models.Model):
         ]
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else "Untitled Post"
+
 
     def get_absolute_url(self):
         return reverse(
