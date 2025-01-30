@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 # from decouple import config
 import dj_database_url
@@ -18,6 +19,8 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 # import cloudinary_storage
+
+load_dotenv() 
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUD_NAME'),
@@ -39,7 +42,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['blog-w1ru.onrender.com']
 
