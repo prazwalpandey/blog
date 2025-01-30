@@ -66,6 +66,15 @@ input, select, textarea {
 	appearance: none;
 }
 
+html {
+    overflow: auto;  /* or overflow: scroll; */
+    scrollbar-width: none;  /* For Firefox */
+}
+
+html:-webkit-scrollbar {
+    display: none;  /* For Chrome, Edge, Safari */
+}
+
 #wrapper{
 	display: block;
 }

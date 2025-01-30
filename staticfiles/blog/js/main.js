@@ -43,53 +43,37 @@
 			});
 
 	// Search (header).
-		var $search = $('#search'),
-			$search_input = $search.find('input');
+	var $search = $('#search-form'),
+        $search_input = $search.find('#search-input'),
+        $search_icon = $('.fa-search');
 
-		$body
-			.on('click', '[href="#search"]', function(event) {
+    // When the search icon is clicked
+    $search_icon.on('click', function (event) {
+        event.preventDefault(); // Prevent default link behavior
 
-				event.preventDefault();
+        if ($search.is(':visible')) {
+            if ($search_input.val().trim()) {
+                $search.submit(); // Submit form if there is text
+            } else {
+                $search.hide(); // Hide form if empty
+            }
+        } else {
+            $search.show();
+            $search_input.focus();
+        }
+    });
 
-				// Not visible?
-					if (!$search.hasClass('visible')) {
+	$(document).on('click', function (event) {
+        if (!$search.is(event.target) && !$search_icon.is(event.target) && $search.has(event.target).length === 0) {
+            $search.hide();
+        }
+    });
 
-						// Reset form.
-							$search[0].reset();
-
-						// Show.
-							$search.addClass('visible');
-
-						// Focus input.
-							$search_input.focus();
-
-					}
-
-			});
-
-		$search_input
-			.on('keydown', function(event) {
-
-				if (event.keyCode == 27)
-					$search_input.blur();
-
-			})
-			.on('blur', function() {
-				window.setTimeout(function() {
-					$search.removeClass('visible');
-				}, 100);
-			});
-
-	// Intro.
-		var $intro = $('#intro');
-
-		// Move to main on <=large, back to sidebar on >large.
-			breakpoints.on('<=large', function() {
-				$intro.prependTo($main);
-			});
-
-			breakpoints.on('>large', function() {
-				$intro.prependTo($sidebar);
-			});
-
+    // Submit form when Enter is pressed
+    $search_input.on('keypress', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            $search.submit();
+        }
+    });
 })(jQuery);
