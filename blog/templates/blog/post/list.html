@@ -1,0 +1,96 @@
+{%extends "blog/base.html"%}
+{% block title %}Inazuma Stark{% endblock %}
+{% block content%}
+<div class="main_list">
+	<!-- Main -->
+		<div id="main">
+			<!-- Post -->
+			{% if posts %}
+				{% for post in posts %}
+					<article class="post">
+						<header>
+							<div class="title">
+								<h2><a href="{{post.get_absolute_url}}">{{post.title}}</a></h2>
+								<p></p>
+							</div>
+							<div class="meta">
+								<time class="published">{{post.publish}}</time>
+							</div>
+						</header>
+						<a href="{{post.get_absolute_url}}" class="image featured">{% if post.image %}
+							<img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 100%;">
+						{% endif %}</a>
+						<p>{{ post.body|truncatewords:30|linebreaks }}</p>
+						<footer>
+							<ul class="actions">
+								<li><a href="{{post.get_absolute_url}}" class="button large">Continue Reading</a></li>
+							</ul>
+							<ul class="stats">
+								<li>
+									<a href="" class="icon solid fa-heart" id="like-icon" data-post-id="{{ post.id }}">
+										{{ post.likes }}
+									</a>
+								</li>
+								<li><a href="{{post.get_absolute_url}}" class="icon solid fa-comment">128</a></li>
+							</ul>
+						</footer>
+					</article>
+				{% endfor %}
+			{% else %}
+				<p>No results found.</p>
+			{% endif %}			
+						<!-- Pagination -->
+							<ul class="actions pagination">
+								{% if posts.has_previous %}
+								<li><a href="?page_object={{posts.previous_page_number}}" class="button large previous">Previous Page</a></li>
+								{% endif %}
+								<!-- <li>{{posts.number}}</li> -->
+								{% if posts.has_next %}
+								<li><a href="?page_object={{posts.next_page_number}}" class="button large next">Next Page</a></li>
+								{% endif %}
+							</ul>
+							
+		</div>
+				<!-- Sidebar -->
+					<section id="sidebar">
+
+									<h3>Pinned</h3>
+
+
+						<!-- Mini Posts -->
+							<section>
+								<div class="mini-posts">
+
+									<!-- Mini Post -->
+										<article class="mini-post">
+											<header>
+												<h3><a href="single.html">Vitae sed condimentum</a></h3>
+												<time class="published" datetime="2015-10-20">October 20, 2015</time>
+												<a href="#" class="author"><img src="images/avatar.jpg" alt="" /></a>
+											</header>
+											<a href="single.html" class="image"><img src="images/pic04.jpg" alt="" /></a>
+										</article>
+
+								</div>
+							</section>
+
+
+								<h3>Most Liked</h3>
+
+						<!-- Posts List -->
+							<section>
+								<ul class="posts">
+									<li>
+										<article>
+											<header>
+												<h3><a href="single.html">Lorem ipsum fermentum ut nisl vitae</a></h3>
+												<time class="published" datetime="2015-10-20">October 20, 2015</time>
+											</header>
+											<a href="single.html" class="image"><img src="images/pic08.jpg" alt="" /></a>
+										</article>
+									</li>
+								</ul>
+							</section>
+					</section>
+				</div>
+{% endblock %}

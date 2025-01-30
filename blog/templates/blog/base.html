@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>{% block title %}{% endblock %}</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link href="{% static 'blog/css/main.css' %}" rel="stylesheet">
+	</head>
+
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" style="padding-bottom: 0;">
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="{% url 'blog:post_list' %}">Inazuma Stark</a></h1>
+
+						<nav class="main">
+							<ul>
+								<li class="search">
+									<a class="fa-search" href="#search">Search</a>
+									<form method="GET" action="{% url 'blog:post_search' %}" id="search-form" style="display: none;">
+									<input type="text" placeholder="Search..." name="query" id="search-input"/>
+									</form>
+								</li>
+							</ul>
+						</nav>
+					</header>
+					{% block content %}
+
+					{% endblock %}
+
+
+					<!-- Footer -->
+		<section id="footer" style="text-align: center; ">
+				<ul class="icons">
+					<li><a href="https://x.com/prazwalpandey" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="https://www.linkedin.com/in/prazwalpandey/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="https://www.instagram.com/_prazwalpandey/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+					<li><a href="https://github.com/prazwalpandey" class="icon brands fa-github"><span class="label">Github</span></a></li>
+					<li>
+						<a href="mailto:prazwalstark@gmail.com" class="icon solid fa-envelope">
+						  <span class="label">Email</span>
+						</a>
+					</li>
+				</ul>
+				<p class="copyright">&copy; Inazuma Labs | Prazwal Pandey</p>
+			</section>
+		</div>
+
+	</body>
+
+	<!-- <script>
+		document.getElementById("search-input").addEventListener("keypress", function(event) {
+			if (event.key === "Enter") {
+				event.preventDefault(); // Prevent default if needed
+				this.form.submit(); // Manually submit the form
+			}
+		});
+	</script> -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			// Add event listeners to each like button
+			const likeButtons = document.querySelectorAll('.icon.fa-heart');
+			
+			likeButtons.forEach(function(likeButton) {
+				likeButton.addEventListener('click', function(e) {
+					e.preventDefault();
+					
+					const postId = this.getAttribute('data-post-id');
+					
+					fetch(`/like/${postId}/`, {
+						method: 'GET',
+					})
+					.then(response => response.json())
+					.then(data => {
+						// Update the like count
+						this.textContent = data.likes;
+					})
+					.catch(error => {
+						console.error('Error:', error);
+					});
+				});
+			});
+		});
+	</script>		
+	<script src="{%static  'blog/js/jquery.min.js' %}"></script>
+	<script src="{%static  'blog/js/browser.min.js' %}"></script>
+	<script src="{%static  'blog/js/breakpoints.min.js' %}"></script>
+	<script src="{%static  'blog/js/util.js' %}"></script>
+	<script src="{%static  'blog/js/main.js' %}"></script>
+
+</html>
