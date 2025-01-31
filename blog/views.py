@@ -50,6 +50,37 @@ class PostDetailView(DetailView):
         )
 
 
+# class PostSearchView(FormView):
+#     template_name = "blog/post/search.html"
+#     form_class = SearchForm
+
+#     def get(self, request, *args, **kwargs):
+#         form = self.get_form()
+#         query = None
+#         results = []
+
+#         if 'query' in request.GET:
+#             form = self.form_class(request.GET)
+#             if form.is_valid():
+#                 query = form.cleaned_data['query']
+#                 search_query = SearchQuery(query)
+#                 results = (
+#                     Post.published.annotate(
+#                         search=SearchVector('title', 'body'),
+#                         rank=SearchRank(SearchVector('title', 'body'), 
+#                                         search_query)
+#                     )
+#                     .filter(search=query)
+#                     .order_by('-rank')
+#                 )
+
+#         return render(
+#             request,
+#             self.template_name,
+#             {'form': form, 'query': query, 'results': results}
+        # )
+
+
 class PostSearchView(FormView):
     template_name = "blog/post/search.html"
     form_class = SearchForm
@@ -67,18 +98,22 @@ class PostSearchView(FormView):
                 results = (
                     Post.published.annotate(
                         search=SearchVector('title', 'body'),
-                        rank=SearchRank(SearchVector('title', 'body'), 
-                                        search_query)
+                        rank=SearchRank(SearchVector('title', 'body'), search_query)
                     )
                     .filter(search=query)
                     .order_by('-rank')
                 )
 
-        return render(
-            request,
-            self.template_name,
-            {'form': form, 'query': query, 'results': results}
-        )
+        context = {
+            "form": form,
+            "query": query,
+            "results": results,
+            "pinned_posts": Post.published.filter(pinned=True).order_by("-publish"),
+            "most_liked_posts": Post.published.order_by("-likes")[:5],
+        }
+
+        return render(request, self.template_name, context)
+
 
 
 def like_post(request, pk):

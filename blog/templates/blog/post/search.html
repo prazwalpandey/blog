@@ -39,61 +39,66 @@
                     <!-- Pagination -->
 							
 				{% endfor %}
-                <ul class="actions pagination">
-                    {% if results.has_previous %}
-                    <li><a href="?page_object={{posts.previous_page_number}}" class="button large previous">Previous Page</a></li>
-                    {% endif %}
-                    <!-- <li>{{posts.number}}</li> -->
-                    {% if results.has_next %}
-                    <li><a href="?page_object={{posts.next_page_number}}" class="button large next">Next Page</a></li>
-                    {% endif %}
-                </ul>
-			{% else %}
-				<p>No results found.</p>
-			{% endif %}			
-						
+                		
+						<!-- Pagination -->
+						<ul class="actions pagination">
+							{% if results.has_previous %}
+							<li><a href="?page={{ results.previous_page_number }}" class="button large previous">Previous Page</a></li>
+							{% endif %}
+							{% if results.has_next %}
+							<li><a href="?page={{ results.next_page_number }}" class="button large next">Next Page</a></li>
+							{% endif %}
+						</ul>
+						{% else %}
+						<p>No results found.</p>
+						{% endif %}
 							
 		</div>
 				<!-- Sidebar -->
-					<section id="sidebar">
-
-									<h3>Pinned</h3>
-
-
-						<!-- Mini Posts -->
-							<section>
-								<div class="mini-posts">
-
-									<!-- Mini Post -->
-										<article class="mini-post">
-											<header>
-												<h3><a href="single.html">Vitae sed condimentum</a></h3>
-												<time class="published" datetime="2015-10-20">October 20, 2015</time>
-												<a href="#" class="author"><img src="images/avatar.jpg" alt="" /></a>
-											</header>
-											<a href="single.html" class="image"><img src="images/pic04.jpg" alt="" /></a>
-										</article>
-
-								</div>
-							</section>
-
-
-								<h3>Most Liked</h3>
-
-						<!-- Posts List -->
-							<section>
-								<ul class="posts">
-									<li>
-										<article>
-											<header>
-												<h3><a href="single.html">Lorem ipsum fermentum ut nisl vitae</a></h3>
-												<time class="published" datetime="2015-10-20">October 20, 2015</time>
-											</header>
-											<a href="single.html" class="image"><img src="images/pic08.jpg" alt="" /></a>
-										</article>
-									</li>
-								</ul>
-							</section>
+				<section id="sidebar">
+					<h3>Most Liked</h3>
+					<section>
+						<ul class="posts">
+							{% for post in most_liked_posts %}
+							<li>
+								<article>
+									<header>
+										<h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+										<time class="published">{{ post.publish }}</time>
+									</header>
+									<a href="{{ post.get_absolute_url }}" class="image">
+										{% if post.image %}
+										<img src="{{ post.image.url }}" alt="{{ post.title }}" />
+										{% endif %}
+									</a>
+								</article>
+							</li>
+							{% empty %}
+							<p>No liked posts yet.</p>
+							{% endfor %}
+						</ul>
 					</section>
+			
+					<h3>Pinned</h3>
+					<section>
+						{% for post in pinned_posts %}
+						<div class="mini-posts">
+							<article class="mini-post">
+								<header>
+									<h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+									<time class="published">{{ post.publish }}</time>
+								</header>
+								<a href="{{ post.get_absolute_url }}" class="image">
+									{% if post.image %}
+									<img src="{{ post.image.url }}" alt="{{ post.title }}" />
+									{% endif %}
+								</a>
+							</article>
+						</div>
+						{% empty %}
+						<p>No pinned posts.</p>
+						{% endfor %}
+					</section>
+				</section>
 				</div>
 {% endblock %}
