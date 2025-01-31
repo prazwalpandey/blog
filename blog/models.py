@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.utils import timezone
 # from taggit.managers import TaggableManager
 import cloudinary.models
+
+
 class PublishedManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status=Post.Status.PUBLISHED)
@@ -27,6 +29,7 @@ class Post(models.Model):
     image = cloudinary.models.CloudinaryField('image', null=True, blank=True)
     objects = models.Manager()
     published = PublishedManager()
+    pinned = models.BooleanField(default=False)
     likes = models.PositiveIntegerField(default=0)
     # tags= TaggableManager()
 
@@ -38,7 +41,6 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title if self.title else "Untitled Post"
-
 
     def get_absolute_url(self):
         return reverse(

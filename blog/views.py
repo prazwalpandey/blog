@@ -6,15 +6,30 @@ from  django.contrib.postgres.search import SearchVector, SearchQuery, SearchRan
 from .forms import SearchForm
 # CommentForm, EmailPostForm,
 from django.http import JsonResponse
+from django.core.paginator import Paginator
+
 
 class PostListView(ListView):
     '''
     Alternative post List View
     '''
+    # context_object_name = 'posts'
+    # paginate_by = 5
+    # template_name = 'blog/post/list.html'
+
+    # def get_queryset(self):
+    #     return Post.published.all()
+    # model = Post
     queryset = Post.published.all()
-    context_object_name = 'posts'
-    paginate_by = 3
-    template_name = 'blog/post/list.html'
+    context_object_name = "posts"
+    paginate_by = 4
+    template_name = "blog/post/list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["pinned_posts"] = Post.published.filter(pinned=True).order_by("-publish")
+        context["most_liked_posts"] = Post.published.order_by("-likes")[:5]
+        return context
 
 
 class PostDetailView(DetailView):

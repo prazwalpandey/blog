@@ -8,9 +8,8 @@
 
 	var	$window = $(window),
 		$body = $('body'),
-		$menu = $('#menu'),
-		$sidebar = $('#sidebar'),
-		$main = $('#main');
+		$menu = $('#menu');
+		
 
 	// Breakpoints.
 		breakpoints({
@@ -70,7 +69,7 @@
     });
 
     // Submit form when Enter is pressed
-    $search_input.on('keypress', function (event) {
+    $search_input.on('keydown', function (event) {
         if (event.key === 'Enter') {
             event.preventDefault();
             $search.submit();

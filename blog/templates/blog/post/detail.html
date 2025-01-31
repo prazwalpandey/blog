@@ -28,5 +28,41 @@
 									</ul>
 								</footer>
 							</article>
+							<article class="post comments">
+								<header>
+									<div class="title">
+										<h2>Comments</h2>
+									</div>
+								</header>
+							
+								<!-- Comment Form -->
+								<form id="commentForm" action="/submit-comment" method="POST">
+									
+										
+										<input type="text" id="name" name="name" placeholder="Nickname" required>
+									<br>
+										<textarea id="comment" name="comment" rows="4" placeholder="Comment" required></textarea>
+									
+							<br>
+								
+										<button type="submit">Submit</button>
+							
+								</form>
+							
+								<!-- Display Comments -->
+								<div id="commentsDisplay">
+									<!-- Example Random Comment -->
+									<div class="comment" style="border-bottom: solid 1px rgba(160, 160, 160, 0.3);" >
+										<strong>John Doe</strong> (john.doe@example.com):
+										<p>This is a great post! I really enjoyed reading it. Keep up the good work!</p>
+										<small>Posted on: October 5, 2023</small>
+									</div>
+									<div class="comment" style="border-bottom: solid 1px rgba(160, 160, 160, 0.3);">
+										<strong>John Doe</strong> (john.doe@example.com):
+										<p>This is a great post! I really enjoyed reading it. Keep up the good work!</p>
+										<small>Posted on: October 5, 2023</small>
+									</div>
+								</div>
+							</article>
 					</div>
 {% endblock %}
